@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prakash Mishra | Cybersecurity Engineer — Microsoft Defender Specialist</title>
+<style>
+  :root{
+    --bg:#0a0e14;
+    --bg-alt:#0d1420;
+    --panel:#111927;
+    --panel-2:#0f1722;
+    --border:#1d2b3d;
+    --accent:#00e5ff;
+    --accent-2:#7c3aed;
+    --ms-blue:#00a4ef;
+    --ms-green:#7fba00;
+    --text:#dbe6f0;
+    --text-dim:#8a9bb0;
+    --danger:#ff4d6d;
+    --warn:#ffb020;
+    --ok:#2ee6a6;
+    font-size:16px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,Arial,sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:"";
+    position:fixed;inset:0;
+    background-image:
+      linear-gradient(rgba(0,229,255,.035) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(0,229,255,.035) 1px,transparent 1px);
+    background-size:34px 34px;
+    pointer-events:none;
+    z-index:0;
+  }
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px;position:relative;z-index:1;}
+  section{position:relative;z-index:1;padding:90px 0;}
+
+  /* NAV */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    background:rgba(8,12,18,.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  nav .navwrap{max-width:1180px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+  .logo{font-weight:700;font-size:18px;letter-spacing:.5px;color:var(--text);display:flex;align-items:center;gap:10px;}
+  .logo .dot{width:10px;height:10px;border-radius:50%;background:var(--ok);box-shadow:0 0 10px var(--ok);animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+  .navlinks{display:flex;gap:28px;font-size:14px;font-weight:500;}
+  .navlinks a{color:var(--text-dim);transition:.2s;border-bottom:2px solid transparent;padding-bottom:4px;}
+  .navlinks a:hover{color:var(--accent);border-color:var(--accent);}
+  .navtoggle{display:none;background:none;border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:6px;}
+  @media(max-width:900px){
+    .navlinks{display:none;}
+    .navtoggle{display:block;}
+  }
+
+  /* BADGES / TAGS */
+  .tag{
+    display:inline-block;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;
+    border:1px solid var(--accent);color:var(--accent);background:rgba(0,229,255,.06);
+    letter-spacing:.5px;text-transform:uppercase;
+  }
+  .section-label{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+  .section-label .num{font-family:'Consolas',monospace;color:var(--accent);font-size:13px;}
+  .section-label .line{height:1px;flex:1;background:linear-gradient(90deg,var(--border),transparent);}
+  h2.headline{font-size:34px;font-weight:800;margin-bottom:8px;color:#fff;}
+  h2.headline span{color:var(--accent);}
+  .subtext{color:var(--text-dim);max-width:700px;margin-bottom:48px;font-size:15px;}
+
+  /* HERO */
+  .hero{
+    min-height:100vh;display:flex;align-items:center;
+    padding-top:120px;padding-bottom:60px;
+    background:radial-gradient(circle at 20% 20%, rgba(0,164,239,.12), transparent 50%),
+               radial-gradient(circle at 80% 70%, rgba(124,58,237,.12), transparent 50%);
+  }
+  .hero-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:50px;align-items:center;}
+  @media(max-width:900px){.hero-grid{grid-template-columns:1fr;}}
+  .hero-eyebrow{font-family:'Consolas',monospace;color:var(--ok);font-size:13px;margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+  .hero h1{font-size:46px;line-height:1.18;font-weight:800;color:#fff;margin-bottom:18px;}
+  .hero h1 .grad{background:linear-gradient(90deg,var(--accent),var(--ms-blue));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .hero p.lead{font-size:17px;color:var(--text-dim);max-width:560px;margin-bottom:30px;}
+  .btnrow{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:36px;}
+  .btn{padding:13px 26px;border-radius:8px;font-weight:600;font-size:14px;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:8px;}
+  .btn-primary{background:linear-gradient(90deg,var(--accent),var(--ms-blue));color:#031018;border:none;}
+  .btn-primary:hover{filter:brightness(1.1);transform:translateY(-2px);}
+  .btn-ghost{border:1px solid var(--border);color:var(--text);background:rgba(255,255,255,.02);}
+  .btn-ghost:hover{border-color:var(--accent);color:var(--accent);}
+  .hero-stats{display:flex;gap:34px;flex-wrap:wrap;}
+  .hero-stats .stat b{font-size:26px;color:var(--accent);display:block;font-family:'Consolas',monospace;}
+  .hero-stats .stat span{font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.5px;}
+
+  /* terminal panel */
+  .terminal{
+    background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;
+    box-shadow:0 20px 60px rgba(0,0,0,.5);
+  }
+  .terminal-head{background:var(--panel-2);padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);}
+  .terminal-head .tdot{width:11px;height:11px;border-radius:50%;}
+  .terminal-head span{margin-left:8px;font-size:12px;color:var(--text-dim);font-family:'Consolas',monospace;}
+  .terminal-body{padding:18px;font-family:'Consolas',monospace;font-size:13px;color:var(--ok);min-height:260px;}
+  .terminal-body .ln{margin-bottom:9px;color:var(--text-dim);}
+  .terminal-body .ln b{color:var(--accent);}
+  .terminal-body .ok{color:var(--ok);}
+  .terminal-body .warn{color:var(--warn);}
+  .terminal-body .cursor{display:inline-block;width:7px;height:14px;background:var(--accent);animation:blink 1s infinite;vertical-align:middle;}
+  @keyframes blink{50%{opacity:0;}}
+
+  /* ABOUT */
+  .about-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:50px;}
+  @media(max-width:900px){.about-grid{grid-template-columns:1fr;}}
+  .about-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:26px;}
+  .about-card h4{color:#fff;font-size:14px;margin-bottom:14px;letter-spacing:.5px;text-transform:uppercase;}
+  .about-list li{list-style:none;display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dashed var(--border);font-size:14px;color:var(--text-dim);}
+  .about-list li b{color:var(--text);font-weight:500;}
+  .about-text p{color:var(--text-dim);margin-bottom:16px;font-size:15px;}
+  .about-text strong{color:var(--accent);}
+
+  /* SKILLS DASHBOARD */
+  .skills-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+  @media(max-width:900px){.skills-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:520px){.skills-grid{grid-template-columns:1fr;}}
+  .skillcard{
+    background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:22px;
+    transition:.25s;
+  }
+  .skillcard:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 10px 30px rgba(0,229,255,.08);}
+  .skillcard .icon{font-size:24px;margin-bottom:12px;}
+  .skillcard h4{color:#fff;font-size:15px;margin-bottom:10px;}
+  .skillbar{height:6px;background:var(--bg-alt);border-radius:4px;overflow:hidden;margin-top:6px;}
+  .skillbar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--ms-blue));border-radius:4px;}
+  .skillcard p{font-size:12px;color:var(--text-dim);margin-top:10px;}
+
+  /* DEFENDER SECTIONS */
+  .defender-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;}
+  @media(max-width:900px){.defender-grid{grid-template-columns:1fr;}}
+  .defcard{
+    background:linear-gradient(180deg,var(--panel),var(--panel-2));
+    border:1px solid var(--border);border-radius:14px;padding:28px;position:relative;overflow:hidden;
+  }
+  .defcard::after{content:"";position:absolute;top:-40px;right:-40px;width:140px;height:140px;
+    background:radial-gradient(circle,rgba(0,229,255,.12),transparent 70%);}
+  .defcard .deftitle{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+  .defcard .deftitle .ico{width:42px;height:42px;border-radius:10px;background:rgba(0,229,255,.1);border:1px solid var(--accent);
+    display:flex;align-items:center;justify-content:center;font-size:18px;flex:none;}
+  .defcard h3{color:#fff;font-size:18px;}
+  .defcard .label{font-size:11px;color:var(--accent);font-family:'Consolas',monospace;letter-spacing:.5px;}
+  .defcard h5{font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.5px;margin:16px 0 8px;}
+  .defcard ul{padding-left:18px;font-size:13.5px;color:var(--text-dim);}
+  .defcard ul li{margin-bottom:6px;}
+  .defcard ul li::marker{color:var(--accent);}
+
+  /* PROJECTS */
+  .proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;}
+  @media(max-width:900px){.proj-grid{grid-template-columns:1fr;}}
+  .projcard{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:26px;transition:.25s;}
+  .projcard:hover{border-color:var(--ms-blue);box-shadow:0 14px 40px rgba(0,164,239,.1);}
+  .projcard .sev{display:inline-block;font-size:11px;padding:4px 10px;border-radius:6px;margin-bottom:14px;font-weight:700;letter-spacing:.5px;}
+  .sev-high{background:rgba(255,77,109,.12);color:var(--danger);border:1px solid var(--danger);}
+  .sev-med{background:rgba(255,176,32,.12);color:var(--warn);border:1px solid var(--warn);}
+  .sev-resolved{background:rgba(46,230,166,.12);color:var(--ok);border:1px solid var(--ok);}
+  .projcard h4{color:#fff;font-size:17px;margin-bottom:10px;}
+  .projcard p{font-size:13.5px;color:var(--text-dim);margin-bottom:14px;}
+  .pillrow{display:flex;gap:8px;flex-wrap:wrap;}
+  .pill{font-size:11px;background:var(--bg-alt);border:1px solid var(--border);color:var(--text-dim);padding:4px 10px;border-radius:6px;}
+
+  /* ACHIEVEMENTS */
+  .ach-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+  @media(max-width:900px){.ach-grid{grid-template-columns:repeat(2,1fr);}}
+  .achcard{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:24px;text-align:center;}
+  .achcard b{font-size:32px;display:block;color:var(--accent);font-family:'Consolas',monospace;}
+  .achcard span{font-size:12.5px;color:var(--text-dim);}
+
+  /* CERTS */
+  .cert-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  @media(max-width:900px){.cert-grid{grid-template-columns:repeat(2,1fr);}}
+  .certcard{border:1px solid var(--border);border-radius:12px;padding:18px;background:var(--panel);text-align:center;position:relative;}
+  .certcard .badgeicon{width:46px;height:46px;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:20px;}
+  .certcard.earned .badgeicon{background:rgba(46,230,166,.12);border:1px solid var(--ok);}
+  .certcard.roadmap .badgeicon{background:rgba(255,176,32,.12);border:1px solid var(--warn);}
+  .certcard h5{font-size:13px;color:#fff;margin-bottom:4px;}
+  .certcard span{font-size:11px;color:var(--text-dim);}
+  .certcard .status{position:absolute;top:10px;right:10px;font-size:9px;padding:2px 7px;border-radius:10px;}
+  .earned .status{background:rgba(46,230,166,.15);color:var(--ok);}
+  .roadmap .status{background:rgba(255,176,32,.15);color:var(--warn);}
+
+  /* TIMELINE */
+  .timeline{position:relative;padding-left:30px;border-left:2px solid var(--border);}
+  .tlitem{position:relative;margin-bottom:34px;}
+  .tlitem::before{content:"";position:absolute;left:-39px;top:2px;width:16px;height:16px;border-radius:50%;background:var(--bg);border:3px solid var(--accent);}
+  .tlitem .when{font-family:'Consolas',monospace;font-size:12px;color:var(--accent);}
+  .tlitem h4{color:#fff;font-size:16px;margin:4px 0 2px;}
+  .tlitem .org{color:var(--text-dim);font-size:13px;margin-bottom:8px;}
+  .tlitem p{color:var(--text-dim);font-size:13.5px;}
+
+  /* BLOG */
+  .blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  @media(max-width:900px){.blog-grid{grid-template-columns:1fr 1fr;}}
+  @media(max-width:600px){.blog-grid{grid-template-columns:1fr;}}
+  .blogcard{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:22px;transition:.25s;}
+  .blogcard:hover{border-color:var(--accent-2);transform:translateY(-3px);}
+  .blogcard .cat{font-size:11px;color:var(--accent-2);text-transform:uppercase;letter-spacing:.5px;font-weight:700;}
+  .blogcard h4{color:#fff;font-size:15.5px;margin:10px 0;}
+  .blogcard p{font-size:13px;color:var(--text-dim);}
+  .blogcard .readmore{font-size:12.5px;color:var(--accent);margin-top:12px;display:inline-block;}
+
+  /* CONTACT */
+  .contact-box{background:linear-gradient(135deg,rgba(0,229,255,.07),rgba(124,58,237,.07));border:1px solid var(--border);border-radius:18px;padding:50px;text-align:center;}
+  .contact-box h2{font-size:30px;color:#fff;margin-bottom:14px;}
+  .contact-box p{color:var(--text-dim);max-width:560px;margin:0 auto 30px;}
+  .contact-links{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;}
+  .clink{border:1px solid var(--border);padding:12px 22px;border-radius:8px;font-size:14px;display:flex;align-items:center;gap:8px;background:var(--panel);transition:.2s;}
+  .clink:hover{border-color:var(--accent);color:var(--accent);}
+
+  footer{padding:30px 0;text-align:center;color:var(--text-dim);font-size:13px;border-top:1px solid var(--border);}
+  footer .dot{color:var(--ok);}
+
+  ::selection{background:var(--accent);color:#000;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="navwrap">
+    <div class="logo"><span class="dot"></span> PM // SecOps</div>
+    <div class="navlinks">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#defender">Defender Stack</a>
+      <a href="#projects">Projects</a>
+      <a href="#achievements">Achievements</a>
+      <a href="#certs">Certifications</a>
+      <a href="#timeline">Experience</a>
+      <a href="#blog">Research</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="hero-eyebrow">&#9679; STATUS: ACTIVE — DEFENDING MICROSOFT 365 ENVIRONMENTS</div>
+      <h1>Cybersecurity Engineer <span class="grad">| Microsoft Defender Specialist</span> | Microsoft 365 Security Expert</h1>
+      <p class="lead">I'm Prakash Mishra — a Microsoft Cybersecurity Engineer specializing in Microsoft Defender for Office 365, Defender XDR, and the broader Microsoft Security ecosystem. I help enterprises detect, investigate, and shut down threats across email, identity, endpoint, and cloud — currently doing exactly that as a Technical Support Engineer on the Microsoft Defender for Office 365 team.</p>
+      <div class="btnrow">
+        <a href="#contact" class="btn btn-primary">&#9889; Get In Touch</a>
+        <a href="#projects" class="btn btn-ghost">&#128269; View Case Studies</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><b>5+</b><span>Years in Security &amp; IT Ops</span></div>
+        <div class="stat"><b>6</b><span>Microsoft Defender Products</span></div>
+        <div class="stat"><b>1000+</b><span>Tickets / Investigations Resolved</span></div>
+        <div class="stat"><b>4</b><span>Cert Roadmap (SC-200/300/100, AZ-500)</span></div>
+      </div>
+    </div>
+    <div class="terminal">
+      <div class="terminal-head">
+        <div class="tdot" style="background:#ff5f56"></div>
+        <div class="tdot" style="background:#ffbd2e"></div>
+        <div class="tdot" style="background:#27c93f"></div>
+        <span>defender-xdr-shell — prakash@m365-soc</span>
+      </div>
+      <div class="terminal-body">
+        <div class="ln">$ <b>Connect-MDOTenant</b> -Investigate</div>
+        <div class="ln ok">✓ Authenticated to Microsoft Defender XDR</div>
+        <div class="ln">$ <b>Get-ThreatExplorer</b> -Type Phish -Last 24h</div>
+        <div class="ln warn">⚠ 14 phishing campaigns auto-remediated via ZAP</div>
+        <div class="ln">$ <b>Search-Mailbox</b> -DKIM Fail -DMARC Quarantine</div>
+        <div class="ln ok">✓ Email authentication policies enforced (SPF/DKIM/DMARC)</div>
+        <div class="ln">$ <b>Invoke-KQLHunt</b> -Workspace Sentinel</div>
+        <div class="ln ok">✓ Anomalous sign-in correlated with Defender for Identity alert</div>
+        <div class="ln">$ <b>New-IncidentResponse</b> -Severity High -Status Contained</div>
+        <div class="ln">root@soc:~$ <span class="cursor"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap">
+    <div class="section-label"><span class="num">01.</span><div class="line"></div></div>
+    <h2 class="headline">About <span>Me</span></h2>
+    <p class="subtext">From frontline technical support to Microsoft Defender specialist — a career built entirely inside the Microsoft Security ecosystem.</p>
+    <div class="about-grid">
+      <div class="about-card">
+        <h4>Quick Facts</h4>
+        <ul class="about-list">
+          <li>Role <b>Technical Support Engineer – MDO, Microsoft</b></li>
+          <li>Location <b>Gurugram, Haryana, India</b></li>
+          <li>Focus <b>M365 Security &amp; Defender XDR</b></li>
+          <li>Education <b>B.Tech, Shankara Institute of Technology</b></li>
+          <li>Email <b>prakash.mishra7063@outlook.com</b></li>
+          <li>LinkedIn <b>/in/prakashmishra-a28b42222</b></li>
+        </ul>
+      </div>
+      <div class="about-text">
+        <p>I'm Prakash Mishra, a <strong>Cybersecurity Engineer</strong> who has spent the last several years immersed in the Microsoft Security stack — from email threat protection to identity and cloud security. My career began in frontline technical support, where I built deep troubleshooting instincts across Microsoft 365 workloads. That foundation evolved through escalation engineering, infrastructure leadership, and now a specialist role on <strong>Microsoft's Defender for Office 365 (MDO)</strong> support team.</p>
+        <p>Today I work at the intersection of <strong>email security, threat hunting, and incident response</strong> — investigating phishing campaigns, tuning anti-phishing and Safe Links/Safe Attachments policies, validating SPF/DKIM/DMARC configurations, and correlating signals across <strong>Microsoft Defender XDR</strong> to help organizations contain real-world threats before they spread.</p>
+        <p>Alongside Defender for Office 365, I bring hands-on experience across <strong>Microsoft Entra ID, Azure AD Connect, Exchange Online, SharePoint Online, Microsoft Teams, and Microsoft Intune</strong> — giving me a full-stack view of how identity, endpoint, and collaboration security come together inside the Microsoft 365 ecosystem. I'm currently expanding into <strong>Microsoft Sentinel and KQL-driven threat hunting</strong>, and building toward the SC-200, SC-300, SC-100, and AZ-500 certifications to formalize my path into security operations and architecture.</p>
+        <p>What drives me is the investigative side of security — pulling apart an incident, tracing the blast radius across Defender products, and turning a messy alert into a clear, defensible remediation story.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS DASHBOARD -->
+<section id="skills" style="background:var(--bg-alt);">
+  <div class="wrap">
+    <div class="section-label"><span class="num">02.</span><div class="line"></div></div>
+    <h2 class="headline">Technical Skills <span>Dashboard</span></h2>
+    <p class="subtext">A SOC-style breakdown of core competencies across the Microsoft Security domain.</p>
+    <div class="skills-grid">
+      <div class="skillcard"><div class="icon">🛰️</div><h4>Security Operations</h4><div class="skillbar"><i style="width:92%"></i></div><p>SOC workflows, alert triage, escalation handling</p></div>
+      <div class="skillcard"><div class="icon">🎯</div><h4>Threat Hunting</h4><div class="skillbar"><i style="width:85%"></i></div><p>KQL queries, Threat Explorer, Sentinel hunting</p></div>
+      <div class="skillcard"><div class="icon">🚨</div><h4>Incident Response</h4><div class="skillbar"><i style="width:90%"></i></div><p>Containment, remediation, root-cause analysis</p></div>
+      <div class="skillcard"><div class="icon">📧</div><h4>Email Security</h4><div class="skillbar"><i style="width:95%"></i></div><p>EOP, Anti-Phishing, Safe Links/Attachments, SPF/DKIM/DMARC</p></div>
+      <div class="skillcard"><div class="icon">🔐</div><h4>Identity Security</h4><div class="skillbar"><i style="width:82%"></i></div><p>Entra ID, Conditional Access, Zero Trust, MDI</p></div>
+      <div class="skillcard"><div class="icon">💻</div><h4>Endpoint Security</h4><div class="skillbar"><i style="width:78%"></i></div><p>Microsoft Defender for Endpoint, Intune compliance</p></div>
+      <div class="skillcard"><div class="icon">☁️</div><h4>Cloud Security</h4><div class="skillbar"><i style="width:75%"></i></div><p>Defender for Cloud Apps, SaaS posture, app governance</p></div>
+      <div class="skillcard"><div class="icon">⚙️</div><h4>M365 Administration</h4><div class="skillbar"><i style="width:93%"></i></div><p>Exchange Online, SharePoint, Teams, Azure AD Connect, PowerShell</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- DEFENDER EXPERTISE -->
+<section id="defender">
+  <div class="wrap">
+    <div class="section-label"><span class="num">03.</span><div class="line"></div></div>
+    <h2 class="headline">Microsoft Defender <span>Expertise</span></h2>
+    <p class="subtext">Deep, hands-on specialization across the Microsoft Defender suite and Microsoft Sentinel.</p>
+    <div class="defender-grid">
+
+      <div class="defcard">
+        <div class="deftitle"><div class="ico">🛡️</div><div><div class="label">EMAIL &amp; COLLABORATION</div><h3>Defender for Office 365</h3></div></div>
+        <h5>Architecture Knowledge</h5>
+        <ul><li>EOP + MDO layered filtering pipeline (anti-spam, anti-malware, anti-phishing)</li><li>Safe Links / Safe Attachments policy design and scoping</li></ul>
+        <h5>Security Operations</h5>
+        <ul><li>Threat Explorer triage, ZAP auto-remediation review, quarantine management</li><li>Email authentication hardening (SPF, DKIM, DMARC)</li></ul>
+        <h5>Real-World Use Cases</h5>
+        <ul><li>Phishing/BEC campaign investigation and tenant-wide remediation</li><li>Submission &amp; user-reported message analysis, allow/block list tuning</li></ul>
+      </div>
+
+      <div class="defcard">
+        <div class="deftitle"><div class="ico">🖥️</div><div><div class="label">ENDPOINT</div><h3>Defender for Endpoint</h3></div></div>
+        <h5>Architecture Knowledge</h5>
+        <ul><li>Onboarding, device inventory, attack surface reduction rules</li></ul>
+        <h5>Security Operations</h5>
+        <ul><li>Alert correlation, device isolation, live response basics</li></ul>
+        <h5>Real-World Use Cases</h5>
+        <ul><li>Endpoint-to-mailbox attack chain reconstruction with MDO data</li><li>Intune-integrated compliance and risk-based remediation</li></ul>
+      </div>
+
+      <div class="defcard">
+        <div class="deftitle"><div class="ico">🪪</div><div><div class="label">IDENTITY</div><h3>Defender for Identity</h3></div></div>
+        <h5>Architecture Knowledge</h5>
+        <ul><li>Sensor placement on AD/Entra infrastructure, lateral movement paths</li></ul>
+        <h5>Security Operations</h5>
+        <ul><li>Identity risk alerts, suspicious sign-in correlation</li></ul>
+        <h5>Real-World Use Cases</h5>
+        <ul><li>BEC follow-up identity compromise validation</li><li>Conditional Access enforcement post-incident</li></ul>
+      </div>
+
+      <div class="defcard">
+        <div class="deftitle"><div class="ico">☁️</div><div><div class="label">CLOUD APPS</div><h3>Defender for Cloud Apps</h3></div></div>
+        <h5>Architecture Knowledge</h5>
+        <ul><li>Cloud App Discovery, OAuth app governance, session policies</li></ul>
+        <h5>Security Operations</h5>
+        <ul><li>Shadow IT visibility, risky app review and revocation</li></ul>
+        <h5>Real-World Use Cases</h5>
+        <ul><li>Malicious OAuth grant investigation tied to phishing incidents</li></ul>
+      </div>
+
+      <div class="defcard">
+        <div class="deftitle"><div class="ico">🧩</div><div><div class="label">UNIFIED SOC</div><h3>Defender XDR</h3></div></div>
+        <h5>Architecture Knowledge</h5>
+        <ul><li>Unified incident correlation across email, identity, endpoint &amp; cloud signals</li></ul>
+        <h5>Security Operations</h5>
+        <ul><li>Incident-level triage, attack story timelines, automated investigation review</li></ul>
+        <h5>Real-World Use Cases</h5>
+        <ul><li>Cross-product incident investigation for multi-stage attacks</li></ul>
+      </div>
+
+      <div class="defcard">
+        <div class="deftitle"><div class="ico">📊</div><div><div class="label">SIEM / THREAT HUNTING</div><h3>Microsoft Sentinel</h3></div></div>
+        <h5>Architecture Knowledge</h5>
+        <ul><li>Data connectors, workbooks, analytics rules, log ingestion</li></ul>
+        <h5>Security Operations</h5>
+        <ul><li>KQL-based hunting queries, alert tuning to reduce noise</li></ul>
+        <h5>Real-World Use Cases</h5>
+        <ul><li>Cross-tenant signal correlation for proactive threat hunting</li></ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" style="background:var(--bg-alt);">
+  <div class="wrap">
+    <div class="section-label"><span class="num">04.</span><div class="line"></div></div>
+    <h2 class="headline">Featured Security <span>Projects</span></h2>
+    <p class="subtext">Case studies drawn from real security operations work across the Microsoft 365 ecosystem.</p>
+    <div class="proj-grid">
+
+      <div class="projcard">
+        <span class="sev sev-resolved">RESOLVED</span>
+        <h4>Phishing Attack Investigation &amp; Remediation</h4>
+        <p>Investigated a multi-mailbox phishing campaign using Threat Explorer, traced the delivery vector to a spoofed sender domain, and deployed tenant-wide remediation (ZAP, ATP indicator blocks) within hours of detection.</p>
+        <div class="pillrow"><span class="pill">Threat Explorer</span><span class="pill">ZAP</span><span class="pill">Anti-Phishing Policy</span></div>
+      </div>
+
+      <div class="projcard">
+        <span class="sev sev-high">CRITICAL</span>
+        <h4>Business Email Compromise (BEC) Response</h4>
+        <p>Led incident response for a suspected BEC case — correlating mailbox rule abuse, forwarding rule anomalies, and sign-in risk via Defender for Identity to contain account takeover and restore trust signals.</p>
+        <div class="pillrow"><span class="pill">Defender XDR</span><span class="pill">Conditional Access</span><span class="pill">Identity Risk</span></div>
+      </div>
+
+      <div class="projcard">
+        <span class="sev sev-med">IN PROGRESS</span>
+        <h4>Zero Trust Security Implementation</h4>
+        <p>Contributing to a Zero Trust rollout across an enterprise tenant — enforcing Conditional Access policies, MFA, device compliance gates via Intune, and least-privilege access reviews.</p>
+        <div class="pillrow"><span class="pill">Zero Trust</span><span class="pill">Entra ID</span><span class="pill">Intune</span></div>
+      </div>
+
+      <div class="projcard">
+        <span class="sev sev-resolved">DEPLOYED</span>
+        <h4>Microsoft Defender Deployment</h4>
+        <p>Supported end-to-end Defender for Office 365 plan configuration for new tenants — policy baselines, Safe Links/Safe Attachments scoping, and user training on phishing simulation results.</p>
+        <div class="pillrow"><span class="pill">MDO Setup</span><span class="pill">Safe Attachments</span><span class="pill">Policy Tuning</span></div>
+      </div>
+
+      <div class="projcard">
+        <span class="sev sev-resolved">OPTIMIZED</span>
+        <h4>Exchange Online Protection Optimization</h4>
+        <p>Audited and re-tuned EOP anti-spam and anti-malware policies to reduce false positives while tightening protection against spoofing, improving spam-filter accuracy across the tenant.</p>
+        <div class="pillrow"><span class="pill">EOP</span><span class="pill">SPF/DKIM/DMARC</span><span class="pill">Spoof Intelligence</span></div>
+      </div>
+
+      <div class="projcard">
+        <span class="sev sev-high">INVESTIGATION</span>
+        <h4>Security Incident Investigation via Defender XDR</h4>
+        <p>Used Defender XDR's unified incident view to reconstruct a cross-product attack chain spanning a phishing email, a compromised endpoint, and anomalous cloud app activity — producing a full incident timeline.</p>
+        <div class="pillrow"><span class="pill">Defender XDR</span><span class="pill">Attack Timeline</span><span class="pill">Automated Investigation</span></div>
+      </div>
+
+      <div class="projcard">
+        <span class="sev sev-med">ONGOING</span>
+        <h4>KQL-Based Threat Hunting</h4>
+        <p>Built custom KQL hunting queries in Microsoft Sentinel and Advanced Hunting to proactively surface suspicious sign-in patterns and mailbox rule anomalies before they escalated into incidents.</p>
+        <div class="pillrow"><span class="pill">KQL</span><span class="pill">Sentinel</span><span class="pill">Advanced Hunting</span></div>
+      </div>
+
+      <div class="projcard">
+        <span class="sev sev-resolved">COMPLIANT</span>
+        <h4>Intune Security Compliance Project</h4>
+        <p>Implemented device compliance policies through Microsoft Intune, tying compliance status into Conditional Access to block non-compliant devices from accessing sensitive Microsoft 365 resources.</p>
+        <div class="pillrow"><span class="pill">Intune</span><span class="pill">Compliance Policies</span><span class="pill">Conditional Access</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements">
+  <div class="wrap">
+    <div class="section-label"><span class="num">05.</span><div class="line"></div></div>
+    <h2 class="headline">Security <span>Achievements</span></h2>
+    <p class="subtext">Measured impact across investigations, escalations, and Microsoft 365 security operations.</p>
+    <div class="ach-grid">
+      <div class="achcard"><b>1000+</b><span>Security &amp; Support Incidents Resolved</span></div>
+      <div class="achcard"><b>300+</b><span>Threat Investigations Performed</span></div>
+      <div class="achcard"><b>150+</b><span>Customer Escalations Handled</span></div>
+      <div class="achcard"><b>20+</b><span>Security Policy Implementations</span></div>
+      <div class="achcard"><b>6</b><span>Microsoft Defender Platforms Mastered</span></div>
+      <div class="achcard"><b>5+</b><span>Years Across Microsoft 365 Ecosystem</span></div>
+      <div class="achcard"><b>8mo</b><span>Direct Experience on MDO @ Microsoft</span></div>
+      <div class="achcard"><b>4</b><span>Security Certs in Active Roadmap</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certs" style="background:var(--bg-alt);">
+  <div class="wrap">
+    <div class="section-label"><span class="num">06.</span><div class="line"></div></div>
+    <h2 class="headline">Certifications &amp; <span>Roadmap</span></h2>
+    <p class="subtext">Current credentials and the security certification path I'm actively pursuing.</p>
+    <div class="cert-grid">
+      <div class="certcard earned"><span class="status">EARNED</span><div class="badgeicon">✅</div><h5>MS-102</h5><span>Microsoft 365 Administrator</span></div>
+      <div class="certcard earned"><span class="status">EARNED</span><div class="badgeicon">✅</div><h5>CompTIA A+</h5><span>220-1001 / 220-1002</span></div>
+      <div class="certcard earned"><span class="status">EARNED</span><div class="badgeicon">✅</div><h5>Lean Six Sigma</h5><span>Yellow Belt Certification</span></div>
+      <div class="certcard earned"><span class="status">EARNED</span><div class="badgeicon">✅</div><h5>M365 Exchange Online</h5><span>Specialist Learning Path</span></div>
+      <div class="certcard roadmap"><span class="status">ROADMAP</span><div class="badgeicon">🎯</div><h5>SC-200</h5><span>Security Operations Analyst</span></div>
+      <div class="certcard roadmap"><span class="status">ROADMAP</span><div class="badgeicon">🎯</div><h5>SC-300</h5><span>Identity &amp; Access Administrator</span></div>
+      <div class="certcard roadmap"><span class="status">ROADMAP</span><div class="badgeicon">🎯</div><h5>SC-100</h5><span>Cybersecurity Architect Expert</span></div>
+      <div class="certcard roadmap"><span class="status">ROADMAP</span><div class="badgeicon">🎯</div><h5>AZ-500</h5><span>Azure Security Engineer</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section id="timeline">
+  <div class="wrap">
+    <div class="section-label"><span class="num">07.</span><div class="line"></div></div>
+    <h2 class="headline">Professional Experience <span>Timeline</span></h2>
+    <p class="subtext">From frontline technical support to Microsoft Cybersecurity Engineer.</p>
+    <div class="timeline">
+
+      <div class="tlitem">
+        <div class="when">NOV 2025 — PRESENT</div>
+        <h4>Technical Support Engineer – Microsoft Defender for Office 365</h4>
+        <div class="org">Microsoft · Noida, India</div>
+        <p>Specialist support and investigation work on Microsoft's flagship email security platform — phishing/BEC investigations, policy tuning, and customer-facing threat remediation.</p>
+      </div>
+
+      <div class="tlitem">
+        <div class="when">JAN 2024 — SEP 2025</div>
+        <h4>Senior System and Infrastructure Engineer</h4>
+        <div class="org">Netoyed · Noida, India</div>
+        <p>Owned enterprise infrastructure and Microsoft 365 administration, bridging system reliability with security best practices.</p>
+      </div>
+
+      <div class="tlitem">
+        <div class="when">JUL 2023 — DEC 2023</div>
+        <h4>Associate Team Lead</h4>
+        <div class="org">Allyis · Bengaluru, India</div>
+        <p>Led a support team handling complex Microsoft 365 cases, mentoring engineers on escalation handling and quality.</p>
+      </div>
+
+      <div class="tlitem">
+        <div class="when">MAR 2023 — JUL 2023</div>
+        <h4>Escalation Engineer – Office 365</h4>
+        <div class="org">Allyis · Hyderabad, India</div>
+        <p>Resolved high-complexity Office 365 escalations, focused on Exchange Online and tenant-level security configuration issues.</p>
+      </div>
+
+      <div class="tlitem">
+        <div class="when">FEB 2022 — MAR 2023</div>
+        <h4>Operations Lead</h4>
+        <div class="org">Concentrix · Gurugram, India</div>
+        <p>Managed operational delivery and process governance for a technical support program, driving SLA and quality improvements.</p>
+      </div>
+
+      <div class="tlitem">
+        <div class="when">JUL 2021 — FEB 2022</div>
+        <h4>Quality Assurance Analyst</h4>
+        <div class="org">Teleperformance · Jaipur, India</div>
+        <p>Audited support interactions for quality and compliance, feeding insights back into training and process improvement.</p>
+      </div>
+
+      <div class="tlitem">
+        <div class="when">MAR 2020 — JUN 2021</div>
+        <h4>Technical Support Representative</h4>
+        <div class="org">Teleperformance · Jaipur, India</div>
+        <p>Started a career-long path in the Microsoft ecosystem, providing frontline technical support and building foundational troubleshooting skills.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section id="blog" style="background:var(--bg-alt);">
+  <div class="wrap">
+    <div class="section-label"><span class="num">08.</span><div class="line"></div></div>
+    <h2 class="headline">Research &amp; <span>Insights</span></h2>
+    <p class="subtext">Writing on Microsoft Security topics — practical, operations-first perspectives.</p>
+    <div class="blog-grid">
+      <div class="blogcard"><span class="cat">Email Security</span><h4>Advanced Phishing Protection in Microsoft Defender</h4><p>Breaking down how Safe Links, Safe Attachments, and ZAP work together to neutralize modern phishing.</p><a class="readmore">Read article →</a></div>
+      <div class="blogcard"><span class="cat">Threat Hunting</span><h4>Threat Hunting with KQL</h4><p>Practical KQL patterns for hunting suspicious sign-ins and mailbox rule abuse in Sentinel and Advanced Hunting.</p><a class="readmore">Read article →</a></div>
+      <div class="blogcard"><span class="cat">Email Security</span><h4>Email Authentication Best Practices</h4><p>A field guide to getting SPF, DKIM, and DMARC right — and the misconfigurations that let spoofing through.</p><a class="readmore">Read article →</a></div>
+      <div class="blogcard"><span class="cat">Identity</span><h4>Zero Trust Security Architecture</h4><p>How Conditional Access, Entra ID, and Intune compliance combine into a practical Zero Trust model.</p><a class="readmore">Read article →</a></div>
+      <div class="blogcard"><span class="cat">XDR</span><h4>Microsoft Defender XDR Investigations</h4><p>Walking through a real cross-product incident — from email entry point to endpoint and cloud app activity.</p><a class="readmore">Read article →</a></div>
+      <div class="blogcard"><span class="cat">Incident Response</span><h4>Incident Response Playbooks</h4><p>Building repeatable, defensible playbooks for phishing, BEC, and account compromise scenarios.</p><a class="readmore">Read article →</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-box">
+      <div class="tag" style="margin-bottom:18px;">Available for Opportunities</div>
+      <h2>Let's Talk Security</h2>
+      <p>Open to roles in Security Operations, Microsoft Defender Engineering, and Microsoft 365 Security architecture. Reach out for collaboration, hiring conversations, or just to talk threat hunting.</p>
+      <div class="contact-links">
+        <a class="clink" href="mailto:prakash.mishra7063@outlook.com">✉️ prakash.mishra7063@outlook.com</a>
+        <a class="clink" href="tel:+916367798391">📱 +91 63677 98391</a>
+        <a class="clink" href="https://www.linkedin.com/in/prakashmishra-a28b42222" target="_blank">🔗 LinkedIn Profile</a>
+        <a class="clink" href="#">📍 Gurugram, Haryana, India</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="dot">●</span> SYSTEM SECURE — © 2026 Prakash Mishra · Cybersecurity Engineer · Microsoft Defender Specialist
+</footer>
+
+</body>
+</html>
